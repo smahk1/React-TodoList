@@ -15,11 +15,7 @@ function handleChange(id, setTodos) {
 
 function handleDelete(id, setTodos) {
 	setTodos((currentTodos) => {
-		currentTodos.filter((todo) => {
-			if (todo.id != id) {
-				return todo
-			}
-		})
+		return (currentTodos.filter((todo) => todo.id != id))
 	}
 	)
 }
@@ -37,7 +33,7 @@ function App() {
 					<input type="checkbox" checked={Item.completed} onChange={() => { handleChange(Item.id, setTodos) }} />
 					{Item.title}
 				</label >
-				<button className="btn btn-danger" onCLick={() => { handleDelete }}>Delete</button>
+				<button className="btn btn-danger" onClick={() => { handleDelete(Item.id, setTodos) }}>Delete</button>
 			</li>
 		)
 	}
