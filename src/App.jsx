@@ -1,28 +1,19 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./styles.css"
+import { handleChange, handleDelete } from "./handlers/handlers";
 
-function handleChange(id, setTodos) {
-	setTodos((currentTodos) => {
-		return (currentTodos.map(todo => {
-			if (todo.id == id) {
-				return { ...todo, completed: !todo.completed }
-			}
-			return todo
-		}))
-	}
-	)
-}
-
-function handleDelete(id, setTodos) {
-	setTodos((currentTodos) => {
-		return (currentTodos.filter((todo) => todo.id != id))
-	}
-	)
-}
 
 function App() {
 	const [Item, setItem] = useState("");
-	const [todos, setTodos] = useState([]);
+	const [todos, setTodos] = useState(() => {
+		const localValue = localStorage.getItem("Items")
+		if (localValue == null) return []
+		return JSON.parse(localValue)
+	});
+
+	useEffect(() => {
+		localStorage.setItem("Items", JSON.stringify(todos))
+	}, [todos]);
 
 	// Item definition
 	function ListItem({ Item }) {
@@ -57,6 +48,7 @@ function App() {
 				<div className="form-row">
 					<label htmlFor="item">Enter Text </label>
 					<input type="text" id="item"
+						value={Item}
 						onChange={e => setItem(e.target.value)}
 					/>
 				</div>
